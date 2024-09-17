@@ -1,0 +1,7 @@
+#!/bin/sh
+systemctl $(dmenu "$@" <<EOF
+suspend
+reboot
+poweroff
+EOF
+)

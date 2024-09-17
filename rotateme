@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+import argparse
+import i3ipc
+import subprocess
+
+parser = argparse.ArgumentParser(description="Rotate i3's idea of the current screen")
+parser.add_argument('how', choices=['normal','left','right','inverted'])
+args = parser.parse_args()
+
+i3 = i3ipc.Connection()
+workspaces = i3.get_workspaces()
+output = [ws.output for ws in workspaces if ws.focused][0]
+subprocess.run(['xrandr', '--output', output, '--rotate', args.how])

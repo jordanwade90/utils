@@ -1,0 +1,24 @@
+#!/usr/bin/bash
+WORDLIST=$(dirname "$0")/diceware.wordlist.asc
+
+declare -i digits
+sep=
+od -tu4 -w4 -v /dev/random | while read -r address digits; do
+    if [[ $digits -lt 2176782336 ]]; then
+	i=12
+	while [[ $i -gt 0 ]]; do
+	    printf '%s' $(( digits % 6 + 1 ))
+	    ((digits /= 6))
+	    ((i--))
+	done
+    fi
+done | for phrase in ${*:-6}; do
+    sep=
+    while [[ $phrase -gt 0 ]]; do
+	read -rn5
+	printf '%s%s' "$sep" "$(grep "^$REPLY" "$WORDLIST" | cut -sf2)"
+	sep=' '
+	((phrase--))
+    done
+    echo
+done

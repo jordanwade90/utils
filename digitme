@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+declare -i digits
+sep=
+od -tu4 -w4 -v /dev/random | while read -r address digits; do
+    if [[ $digits -lt 4000000000 ]]; then
+	printf '%s' "$(( digits % 1000000000 ))"
+    fi
+done | for i in ${*:-3 3 4}; do
+    read -rn"$i" && printf '%s%s' "$sep" "$REPLY"
+    sep=' '
+done
+echo

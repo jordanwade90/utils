@@ -1,0 +1,17 @@
+#!/usr/bin/bash
+declare -i digits
+sep=
+od -tu4 -w4 -v /dev/random | while read -r address digits; do
+    if [[ $digits -lt 2176782336 ]]; then
+	i=12
+	while [[ $i -gt 0 ]]; do
+	    printf '%s' $(( digits % 6 + 1 ))
+	    ((digits /= 6))
+	    ((i--))
+	done
+    fi
+done | for i in ${*:-5}; do
+    read -rn"$i" && printf '%s%s' "$sep" "$REPLY"
+    sep=' '
+done
+echo
