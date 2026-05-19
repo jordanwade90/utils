@@ -1,0 +1,3 @@
+#!/bin/sh
+qrencode -tUTF8 "$(xclip -out)"
+read
