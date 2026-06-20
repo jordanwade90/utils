@@ -1,0 +1,11 @@
+#!/bin/bash
+compute() {
+    used=$1
+    avail=$2
+    total=$((used+avail))
+    printf '%d%%\n' $(( (100*used + total-1) / total ))
+}
+
+for dataset in "$@"; do
+    compute $(zfs get -Hpovalue used,available "$dataset")
+done
